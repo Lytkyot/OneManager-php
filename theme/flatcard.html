@@ -3,9 +3,9 @@
     "music":"musical-notes",
     "video":"logo-youtube",
     "img":"image",
-    "office":"paper",
+    "office":"newspaper",
     "txt":"clipboard",
-    "zip":"filing",
+    "zip":"file-tray-full",
     "iso":"disc",
     "apk":"logo-android",
     "exe":"logo-windows",
@@ -49,14 +49,29 @@
         .more-disk a{flex-grow: 1;text-align: center;font-size: 15px;padding:14px 20px;transition-duration: 0.4s;background-color: #f4f5f8; color: #353535;display: inline-block;}
         .more-disk a:hover, .more-disk a[now]{ background-color: rgb(79 116 220); color: white; }
         .list-table{width:100%;padding:0 20px 20px 20px;border-spacing:0}
-        .list-table tr{height:33px}
+        .list-table tr{height:2rem; line-height: 1.5rem;}
         .list-table tr[data-to]:hover{background: rgb(79 116 220);color:white;}
         .list-table tr[data-to]:hover a{color:white}
         .list-table tr:first-child{background:rgba(245,245,245,0)}
+        .list-table tr[data-to]:hover .operate ul li a{color:black}
+        .list-table tr ion-icon {vertical-align: middle; height: 2rem;}
         .list-table td,.list-table th{padding:0 10px;text-align:left}
+        .list-table td.file a {vertical-align: middle;}
         .list-table .size,.list-table .updated_at{text-align:right}
         .updated_at{width:25%}
         .size{width:15%}
+        .list-table tbody.grid-view {display: flex;flex-wrap: wrap;position: relative;width: 100%;grid-template: repeat(auto-fill, 100px) / repeat(auto-fill, minmax(100px, 50%));grid-auto-rows: 100px;}
+        .list-table tbody.grid-view td, .list-table tbody.grid-view th {padding:0;}
+        .list-table tbody.grid-view img {height: 150px;width: 100%;object-fit: cover;position:relative;}
+        .list-table tbody.grid-view #tr0{width: 100%;height: 33px;background-color: unset !important;}
+        .list-table  tbody.grid-view tr {width: unset;height: 150px;background-color: #efefef;margin: 2px;position: relative;flex-grow: 1;min-width: 100px;}
+        .list-table tbody.grid-view td.file {display: block;width: 100%;height: 100%;}
+        .list-table tbody.grid-view td.file a {width: 100%;height: 100%;display: inline-block;position:relative}
+        .list-table tbody.grid-view td.file a > span {position: absolute;left: 3px;}
+        .list-table tbody.grid-view td.file .download {display: none;}
+        .list-table tbody.grid-view td.file ion-icon{position: absolute;top: calc(50% - 25px);left: calc(50% - 25px);width: 50px;height: 50px;color: #0002}
+        .list-table tbody.grid-view td.updated_at {position: absolute;bottom: 0px;height: 1.5em;overflow-y: hidden;width: 100%;background-image: linear-gradient(#ffffff00, #0000008f);color: #fffc;z-index: 3;}
+        .list-table tbody.grid-view td.size {display: none;}
         .mask{position:absolute;left:0px;top:0px;width:100%;background-color:#000;filter:alpha(opacity=50);opacity:0.5;z-index:2;}
 <!--AdminStart-->
         #top-op {position: absolute;color: white;font-size: 12px;}
@@ -66,7 +81,6 @@
         body .active ul{position:absolute;display:inline-table;} /*for some mobile browser */
         .operate ul li{padding:7px;list-style:none;display:block;}
         .operate ul li:hover {background-color: #f4f5f8;}
-        .list-table tr[data-to]:hover .operate ul li a{color:black}
         #tr0{height: 40px;}
 <!--AdminEnd-->
         .operatediv{position:absolute;border-radius: 8px;background-color:#ffffff;z-index:2;box-shadow: 5px 5px 10px 0 #00000033;padding: 15px 4px;}
@@ -108,7 +122,7 @@
     <li class="operate" id="top-op"><ion-icon name="construct"></ion-icon><!--constStr@Operate--><ul>
 <!--IsFolderStart-->
         <li><a onclick="showdiv(event,'create','');"><ion-icon name="add-circle"></ion-icon><!--constStr@Create--></a></li>
-        <li><a onclick="showdiv(event,'encrypt','');"><ion-icon name="lock"></ion-icon><!--constStr@Encrypt--></a></li>
+        <li><a onclick="showdiv(event,'encrypt','');"><ion-icon name="lock-closed"></ion-icon><!--constStr@Encrypt--></a></li>
         <li><a href="?RefreshCache"><ion-icon name="refresh"></ion-icon><!--constStr@RefreshCache--></a></li>
 <!--IsFolderEnd-->
         <li><a href="<!--IsPreview?-->setup"><ion-icon name="settings"></ion-icon><!--constStr@Setup--></a></li>
@@ -260,7 +274,7 @@
 <!--AdminStart-->
                             <li class="operate"><ion-icon name="construct"></ion-icon><a><!--constStr@Operate--></a>
                             <ul>
-                                <li><a onclick="showdiv(event,'encrypt',<!--filenum-->);"><ion-icon name="lock"></ion-icon><!--constStr@Encrypt--></a></li>
+                                <li><a onclick="showdiv(event,'encrypt',<!--filenum-->);"><ion-icon name="lock-closed"></ion-icon><!--constStr@Encrypt--></a></li>
                                 <li><a onclick="showdiv(event, 'rename',<!--filenum-->);"><ion-icon name="create"></ion-icon><!--constStr@Rename--></a></li>
                                 <li><a onclick="showdiv(event, 'move',<!--filenum-->);"><ion-icon name="move"></ion-icon><!--constStr@Move--></a></li>
                                 <li><a onclick="showdiv(event, 'copy',<!--filenum-->);"><ion-icon name="copy"></ion-icon><!--constStr@Copy--></a></li>
@@ -483,7 +497,7 @@
         <div>
             <a onclick="operatediv_close('login')" class="operatediv_close">×</a>
             <center>
-                <form action="<!--IsPreview?-->admin" method="post" onsubmit="return sha1loginpass(this);">
+                <form action="<!--IsPreview?-->login=admin" method="post" onsubmit="return sha1loginpass(this);">
                     <input id="login_input" name="password1" type="password" placeholder="<!--constStr@InputPassword-->">
                     <input name="timestamp" type="hidden" value="">
                     <input type="submit" value="<!--constStr@Login-->">
@@ -496,11 +510,11 @@
 </body>
 
 <!--ListStart-->
-<!--MdRequireStart--><link rel="stylesheet" href="//unpkg.zhimg.com/github-markdown-css@3.0.1/github-markdown.css">
-<script type="text/javascript" src="//unpkg.zhimg.com/marked@0.6.2/marked.min.js"></script><!--MdRequireEnd-->
-<!--GuestUploadStart--><script type="text/javascript" src="//cdn.bootcss.com/spark-md5/3.0.0/spark-md5.min.js"></script><!--GuestUploadEnd-->
-<!--AliyundriveUploadJsStart--><script src="https://cdn.bootcss.com/js-sha1/0.6.0/sha1.min.js"></script><!--AliyundriveUploadJsEnd-->
-<!--IsFileStart--><!--IspdfFileStart--><script src="//cdn.bootcss.com/pdf.js/2.3.200/pdf.min.js"></script><!--IspdfFileEnd--><!--IsFileEnd-->
+<!--MdRequireStart--><link rel="stylesheet" href="https://unpkg.com/github-markdown-css@3.0.1/github-markdown.css">
+<script type="text/javascript" src="?jsFile=marked.js"></script><!--MdRequireEnd-->
+<!--GuestUploadStart--><script type="text/javascript" src="?jsFile=spark-md5.min.js"></script><!--GuestUploadEnd-->
+<!--AliyundriveUploadJsStart--><script src="?jsFile=sha1.min.js"></script><!--AliyundriveUploadJsEnd-->
+<!--IsFileStart--><!--IspdfFileStart--><script src="https://unpkg.com/pdfjs-dist@2.4.456/build/pdf.min.js"></script><!--IspdfFileEnd--><!--IsFileEnd-->
 <!--ListEnd-->
 <style type="text/css">
     .markdown-body{font-size: 14px;}
@@ -544,7 +558,9 @@
 <!--IsFileStart-->
     var $url = document.getElementById('url');
     if ($url) {
-        $url.innerHTML = location.protocol + '//' + location.host + $url.innerHTML;
+        let url = location.href;
+        url = url.substr(0, url.length-8);
+        $url.innerHTML = url.replace(/&amp;/g, '&amp;amp;');
         $url.style.height = $url.scrollHeight + 'px';
     }
 <!--IsofficeFileStart-->
@@ -626,10 +642,10 @@
     addVideos(['<!--FileEncodeUrl-->']);
 <!--IsvideoFileEnd-->
 <!--IspdfFileStart-->
-    pdfjsLib.GlobalWorkerOptions.workerSrc = '//cdn.bootcss.com/pdf.js/2.3.200/pdf.worker.min.js';
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://unpkg.com/pdfjs-dist@2.4.456/build/pdf.worker.min.js';
     var loadingTask = pdfjsLib.getDocument({
         url: '<!--FileDownUrl-->',
-        cMapUrl: "//cdn.jsdelivr.net/npm/pdfjs-dist@2.2.228/cmaps/",
+        cMapUrl: "https://unpkg.com/pdfjs-dist@2.4.456/cmaps/",
         cMapPacked: true,
         rangeChunkSize: 65535
     });
@@ -677,9 +693,39 @@
     }
 <!--ReadmemdEnd-->
 <!--ShowThumbnailsStart-->
+    var isGrid = false;
+    var isthumbLoaded = false;
     function showthumbnails(obj) {
+
         images = [<!--ImgExts-->];
         var files=document.getElementsByName('filelist');
+
+        if (document.getElementById('originalpic').checked==true){
+            if(isGrid){
+                var list_body = document.getElementById('list-table').firstElementChild
+                list_body.classList.remove('grid-view')
+                isGrid = false
+            }
+        }else {
+            if(!isGrid){
+                // turn to grid view
+                var list_body = document.getElementById('list-table').firstElementChild
+                list_body.classList.add('grid-view')
+                isGrid = true
+                if (isthumbLoaded) {
+                    return
+                }else {
+                    isthumbLoaded = true
+                }
+            } else {
+                var list_body = document.getElementById('list-table').firstElementChild
+                list_body.classList.remove('grid-view')
+                isGrid = false
+                return
+            }
+        }
+
+
         for ($i=0;$i<files.length;$i++) {
             str=files[$i].innerText;
             if (str.substr(-1)==' ') str=str.substr(0,str.length-1);
@@ -698,7 +744,7 @@
                 }
             }
         }
-        obj.disabled='disabled';
+        // obj.disabled='disabled';
     }
     function get_thumbnails_url(url, name, filea) {
         var xhr = new XMLHttpRequest();
@@ -706,7 +752,7 @@
         xhr.send('');
         xhr.onload = function(e){
             if (xhr.status==200) {
-                if (xhr.responseText!='') filea.innerHTML='<img src="'+xhr.responseText+'" alt="'+name+'">';
+                if (xhr.responseText!='') filea.innerHTML= '<span>' + filea.innerHTML + '</span>' + '<img src="'+xhr.responseText+'" alt="'+name+'">';
             } else console.log(xhr.status+'\n'+xhr.responseText);
         }
     }
@@ -1651,7 +1697,7 @@
     document.getElementById('password1').focus();
 <!--EncryptedEnd-->
 </script>
-<script src="//unpkg.zhimg.com/ionicons@4.4.4/dist/ionicons.js"></script>
-<!--LoginStart--><script src="https://cdn.bootcss.com/js-sha1/0.6.0/sha1.min.js"></script><!--LoginEnd-->
+<script src="https://cdn.jsdelivr.net/npm/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<!--LoginStart--><script src="?jsFile=sha1.min.js"></script><!--LoginEnd-->
 <!--customScript-->
 </html>
